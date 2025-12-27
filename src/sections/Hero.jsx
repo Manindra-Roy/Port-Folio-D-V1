@@ -57,8 +57,6 @@ results driven webs/apps`
             rotationIntensity={0}
             floatIntensity={isMobileMd ? 2 : isMobile ? 2.5 : 1}
           >
-            /* {RenderSaraswati} */
-            /* {RenderCodeM} */
             {RenderClock}
           </Float>
           <Environment resolution={256}>
