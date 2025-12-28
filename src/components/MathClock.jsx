@@ -247,6 +247,8 @@
 // // Preload the model to prevent lag
 // useGLTF.preload("/models/MathClock.glb");
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 import React, { useRef, useMemo, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
