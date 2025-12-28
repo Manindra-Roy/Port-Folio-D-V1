@@ -54,7 +54,7 @@ const ServiceSummary = () => {
             ? "text-5xl"
             : ""
         }`}
-        style={{ fontSize: isFHd ? "92.5px" :isDeviceXl?"65px": "" }}
+        style={{ fontSize: isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
       >
         <p>Architucture</p>
       </div>
@@ -67,7 +67,7 @@ const ServiceSummary = () => {
             ? "text-5xl"
             : "translate-x-16"
         }`}
-        style={{ fontSize: isFHd ? "92.5px" :isDeviceXl?"65px": "" }}
+        style={{ fontSize: isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
       >
         <p className="font-normal">Development</p>
         <div
@@ -85,7 +85,7 @@ const ServiceSummary = () => {
             ? "text-5xl -translate-x-35"
             : "-translate-x-48"
         }`}
-        style={{ fontSize: isFHd ? "92.5px" :isDeviceXl?"65px": "" }}
+        style={{ fontSize: isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
       >
         <p>APIs</p>
         <div
@@ -108,7 +108,7 @@ const ServiceSummary = () => {
             ? "text-5xl translate-x-60"
             : "translate-x-48"
         }`}
-        style={{ fontSize: isFHd ? "92.5px" :isDeviceXl?"65px": "" }}
+        style={{ fontSize: isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
       >
         <p>Databases</p>
       </div>
