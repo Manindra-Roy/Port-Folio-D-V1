@@ -350,7 +350,7 @@ export function MathClock(props) {
       {...props}
       dispose={null}
       scale={isDeviceLg? 0.8 : isMobileMd ? 0.45 : isMobile ? 0.6 : 0.3}
-      position={[0,isDeviceLg? 1.75 : isMobileMd ? 1.5 : isMobile ? 2.6 : 0.7, 0]}
+      position={[0,isDeviceLg? 1.75 : isMobileMd ? 1.5 : isMobile ? 2.55 : 0.7, 0]}
       rotation={[0, Math.PI, 0]}
     >
       <group name="Sketchfab_Scene">
