@@ -61,6 +61,7 @@ const AnimatedHeaderSection = ({
                 ? "text-center"
                 : "text-sm"
             } font-light tracking-[0.5rem] uppercase px-10 ${textColor}`}
+            style={{fontSize: isMobileXs?"10px":""}}
           >
             {subTitle}
           </p>
@@ -74,7 +75,9 @@ const AnimatedHeaderSection = ({
                   : ""
               }`}
               style={{
-                fontSize: isMobileMd
+                fontSize: isMobileXs
+                  ? "45px"
+                  : isMobileMd
                   ? "115px"
                   : isDeviceLg
                   ? "95px"

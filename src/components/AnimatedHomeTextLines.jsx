@@ -35,7 +35,15 @@ export const AnimatedHomeTextLines = ({ text, className }) => {
     <div
       ref={containerRef}
       className={className}
-      style={{ fontSize: isMobileXs?"15px": isDeviceXl ? "20px" : isFHd ? "27.5px" : "" }}
+      style={{
+        fontSize: isMobileXs
+          ? "15px"
+          : isDeviceXl
+          ? "20px"
+          : isFHd
+          ? "27.5px"
+          : "",
+      }}
     >
       {lines.map((line, index) => (
         <span

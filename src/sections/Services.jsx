@@ -67,7 +67,7 @@ const Services = () => {
                 className={`${
                   isMobileXs || isMobileSm? "text-lg" : "text-xl"
                 } leading-relaxed tracking-widest lg:text-2xl text-white/60 text-pretty`}
-                 style={{fontSize:isDeviceXl?"18px":""}}
+                 style={{fontSize:isMobileXs?"15.5px":isDeviceXl?"18px":""}}
               >
                 {service.description}
               </p>
