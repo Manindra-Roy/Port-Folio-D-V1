@@ -71,7 +71,7 @@ results driven webs/apps`
       />
       <figure
         className="absolute inset-0 -z-20"
-        style={{ width: "100dvw", height: "50%",  }}
+        style={{ width: "100dvw", height: "45%",  }}
       >
         <Canvas
           // 2. PAUSE RENDERING when out of view
