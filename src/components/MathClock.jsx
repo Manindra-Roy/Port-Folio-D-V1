@@ -13,7 +13,6 @@ export function MathClock(props) {
   const isMobile = useMediaQuery({ maxWidth: 853 });
   const isDeviceLg = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
   const isDeviceXl = useMediaQuery({ minWidth: 1025, maxWidth: 1280 });
-  
 
   // 2. Load Model Data
   const { nodes, materials } = useGLTF("/models/MathClock.glb");
@@ -54,7 +53,7 @@ export function MathClock(props) {
       mat.emissive.set("white");
 
       // Step C: Brightness intensity (Increase this if text is still dim)
-      mat.emissiveIntensity = 2.5;
+      mat.emissiveIntensity = 1.5;
 
       // Step D: Ensure background stays matte black
       mat.roughness = 1;
@@ -99,11 +98,21 @@ export function MathClock(props) {
       ref={group}
       {...props}
       dispose={null}
-      scale={isDeviceLg ? 0.8 : isMobileMd ? 0.45 : isMobile ? 0.7 : 0.3}
+      scale={
+        isMobileXs
+          ? 0.8
+          : isDeviceLg
+          ? 0.8
+          : isMobileMd
+          ? 0.45
+          : isMobile
+          ? 0.7
+          : 0.3
+      }
       position={[
         0,
         isMobileXs
-          ? 2.4
+          ? 2.20
           : isDeviceLg
           ? 1.75
           : isMobileMd

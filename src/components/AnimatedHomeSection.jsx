@@ -54,7 +54,7 @@ const AnimatedHomeSection = ({
       <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
         <div
           ref={headerRef}
-          className={`flex flex-col justify-center gap-12 pt-16 sm:gap-16`}
+          className={`flex flex-col justify-center gap-8 pt-16 sm:gap-16`}
         >
           <p
             className={`${
@@ -73,7 +73,7 @@ const AnimatedHomeSection = ({
           <div className="px-10">
             <h1
               className={`flex flex-col ${
-                isMobileXs || isMobileSm ? "gap-6" : "gap-12"
+                isMobileXs ? "gap-4" : isMobileSm ? "gap-6" : "gap-12"
               } uppercase banner-text-responsive sm:gap-16 md:block ${textColor} ${
                 isMobileXs || isMobileSm || isMobileMd
                   ? "text-5xl text-center"
@@ -117,7 +117,7 @@ const AnimatedHomeSection = ({
         }}
       >
         <div className="absolute inset-x-0 border-t-2" />
-        <div className="py-12 sm:py-16 text-end" style={{paddingTop:isDeviceXl?"20px":""}}>
+        <div className={`${isMobileXs?"py-8":"py-12"}  sm:py-16 text-end`} style={{paddingTop:isDeviceXl?"20px":""}}>
           <AnimatedHomeTextLines
             text={text}
             className={`font-light uppercase value-text-responsive ${textColor} ${
