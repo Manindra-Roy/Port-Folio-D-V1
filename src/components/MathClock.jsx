@@ -10,9 +10,10 @@ export function MathClock(props) {
   const isMobileXs = useMediaQuery({ maxWidth: 360 });
   const isMobileSm = useMediaQuery({ minWidth: 361, maxWidth: 640 });
   const isMobileMd = useMediaQuery({ minWidth: 641, maxWidth: 768 });
+  const isMobile = useMediaQuery({ maxWidth: 853 });
   const isDeviceLg = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
   const isDeviceXl = useMediaQuery({ minWidth: 1025, maxWidth: 1280 });
-  const isMobile = useMediaQuery({ maxWidth: 853 });
+  
 
   // 2. Load Model Data
   const { nodes, materials } = useGLTF("/models/MathClock.glb");
@@ -98,10 +99,18 @@ export function MathClock(props) {
       ref={group}
       {...props}
       dispose={null}
-      scale={isDeviceLg ? 0.8 : isMobileMd ? 0.45 : isMobile ? 0.6 : 0.3}
+      scale={isDeviceLg ? 0.8 : isMobileMd ? 0.45 : isMobile ? 0.7 : 0.3}
       position={[
         0,
-        isDeviceLg ? 1.75 : isMobileMd ? 1.5 : isMobile ? 2.55 : 0.7,
+        isMobileXs
+          ? 2.4
+          : isDeviceLg
+          ? 1.75
+          : isMobileMd
+          ? 1.5
+          : isMobile
+          ? 2.55
+          : 0.7,
         0,
       ]}
       rotation={[0, Math.PI, 0]}
