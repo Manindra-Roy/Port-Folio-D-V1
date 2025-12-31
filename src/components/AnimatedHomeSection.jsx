@@ -50,11 +50,11 @@ const AnimatedHomeSection = ({
     );
   }, []);
   return (
-    <div ref={contextRef}>
+    <div ref={contextRef} style={{height:"50dvh"}}>
       <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
         <div
           ref={headerRef}
-          className={`flex flex-col justify-center gap-8 pt-16 sm:gap-16`}
+          className={`flex flex-col justify-center gap-8 pt-0 sm:gap-16`}
         >
           <p
             className={`${

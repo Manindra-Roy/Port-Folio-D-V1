@@ -100,7 +100,7 @@ export function MathClock(props) {
       dispose={null}
       scale={
         isMobileXs
-          ? 0.8
+          ? 1.5
           : isDeviceLg
           ? 0.8
           : isMobileMd
@@ -112,7 +112,7 @@ export function MathClock(props) {
       position={[
         0,
         isMobileXs
-          ? 2.20
+          ? 0
           : isDeviceLg
           ? 1.75
           : isMobileMd
