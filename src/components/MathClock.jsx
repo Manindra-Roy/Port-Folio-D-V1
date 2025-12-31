@@ -101,25 +101,29 @@ export function MathClock(props) {
       scale={
         isMobileXs
           ? 1.5
-          : isDeviceLg
-          ? 0.8
+          : isMobileSm
+          ? 1.5
           : isMobileMd
-          ? 0.45
-          : isMobile
-          ? 0.7
-          : 0.3
+          ? 1
+          : isDeviceLg
+          ? 1.5
+          : // : isMobile
+            // ? 0.7
+            0.3
       }
       position={[
         0,
         isMobileXs
           ? 0
-          : isDeviceLg
-          ? 1.75
+          : isMobileSm
+          ? 0
           : isMobileMd
-          ? 1.5
-          : isMobile
-          ? 2.55
-          : 0.7,
+          ? 0
+          : isDeviceLg
+          ? 0
+          : // : isMobile
+            // ? 2.55
+            0.7,
         0,
       ]}
       rotation={[0, Math.PI, 0]}
