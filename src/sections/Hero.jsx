@@ -61,6 +61,7 @@ results driven webs/apps`
       ref={sectionRef}
       id="home"
       className="flex flex-col justify-end min-h-screen bg-black -z-30 relative"
+      style={{width:"100svw",height:"100svh"}}
     >
       <AnimatedHomeSection
         subTitle={"404 No Bugs Found"}
@@ -70,7 +71,7 @@ results driven webs/apps`
       />
       <figure
         className="absolute inset-0 -z-20"
-        style={{ width: "100dvw", height: "50dvh",  }}
+        style={{ width: "100dvw", height: "50%",  }}
       >
         <Canvas
           // 2. PAUSE RENDERING when out of view

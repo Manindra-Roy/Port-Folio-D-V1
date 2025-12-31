@@ -50,7 +50,7 @@ const AnimatedHomeSection = ({
     );
   }, []);
   return (
-    <div ref={contextRef} style={{height:"50dvh"}}>
+    <div ref={contextRef} style={{height:"50%"}}>
       <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
         <div
           ref={headerRef}
