@@ -50,7 +50,7 @@ const AnimatedHomeSection = ({
     );
   }, []);
   return (
-    <div ref={contextRef} style={{height:"55%"}}>
+    <div ref={contextRef} style={{ height: "50%" }}>
       <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
         <div
           ref={headerRef}
@@ -58,14 +58,17 @@ const AnimatedHomeSection = ({
         >
           <p
             className={`${
-              isMobileXs || isMobileSm
+              isMobileXs
+                ? "text-xs text-center"
+                : isMobileSm
                 ? "text-xs text-center"
                 : isMobileMd
                 ? "text-center"
                 : "text-sm"
             } font-light tracking-[0.5rem] uppercase px-10 ${textColor}`}
             style={{
-              paddingLeft: isFHd ? "50px" :isDeviceXl?"50px": "",
+              paddingLeft: isFHd ? "50px" : isDeviceXl ? "50px" : "",
+              fontSize: isMobileXs?"10px":""
             }}
           >
             {subTitle}
@@ -80,7 +83,9 @@ const AnimatedHomeSection = ({
                   : ""
               }`}
               style={{
-                fontSize: isMobileMd
+                fontSize: isMobileXs
+                  ? "45px"
+                  : isMobileMd
                   ? "115px"
                   : isDeviceLg
                   ? "95px"
@@ -117,7 +122,10 @@ const AnimatedHomeSection = ({
         }}
       >
         <div className="absolute inset-x-0 border-t-2" />
-        <div className={`${isMobileXs?"py-8":"py-12"}  sm:py-16 text-end`} style={{paddingTop:isDeviceXl?"20px":""}}>
+        <div
+          className={`${isMobileXs ? "py-8" : "py-12"}  sm:py-16 text-end`}
+          style={{ paddingTop: isDeviceXl ? "20px" : "" }}
+        >
           <AnimatedHomeTextLines
             text={text}
             className={`font-light uppercase value-text-responsive ${textColor} ${
