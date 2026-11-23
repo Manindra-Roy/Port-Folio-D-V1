@@ -60,7 +60,7 @@
   font-display: swap;
 }
 
-/* Amiamie-Round Variants (if needed separately) */
+/* Amiamie-Round Variants */
 @font-face {
   font-family: "Amiamie-Round";
   src: url("/fonts/otf/Amiamie-RegularRound.otf") format("opentype"),
@@ -87,11 +87,15 @@
   font-style: italic;
   font-display: swap;
 }
+
 @theme {
   --color-primary: #e5e5e0;
+  --color-obsidian: #0a0a09;
+  --color-surface: #121210;
   --color-DarkLava: #393632;
   --color-SageGray: #8b8b73;
   --color-gold: #cfa355;
+  --color-gold-light: #e7c582;
   --font-amiamie: "Amiamie", sans-serif;
   --font-amiamie-round: "Amiamie-Round", sans-serif;
 
@@ -106,30 +110,143 @@
   }
 }
 
+html {
+  background-color: #0a0a09;
+}
+
 body {
   background: #e5e5e0;
-  color: black;
-  scroll-behavior: smooth;
-  overflow-x: hidden;
+  color: #0a0a09;
+  overflow-x: clip;
   font-family: var(--font-amiamie);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #cfa355;
+  color: #0a0a09;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a09;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cfa355;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e7c582;
+}
+
+/* Subtle luxury film grain texture overlay */
+.film-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scrollCue {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(180%);
+    opacity: 0;
+  }
+}
+
+.animate-modal-in {
+  animation: modalIn 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-backdrop-in {
+  animation: backdropIn 0.24s ease-out forwards;
+}
+
+.animate-scroll-cue {
+  animation: scrollCue 2.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Editorial outline typography for kinetic displays */
+.text-outline-dark {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(10, 10, 9, 0.55);
+  transition: color 0.35s ease, -webkit-text-stroke-color 0.35s ease;
+}
+
+.text-outline-dark:hover {
+  color: #0a0a09;
+  -webkit-text-stroke-color: #0a0a09;
 }
 
 @utility clip-path {
   clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
 }
 
+/* Fluid editorial typography scaling smoothly from 320px to 1920px+ */
 @utility banner-text-responsive {
-  @apply text-[68px] sm:text-[118px] md:text-[126px] lg:text-[152px] leading-9 sm:leading-16 lg:leading-20;
+  font-size: clamp(2.45rem, 7.6vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+@utility hero-title-responsive {
+  font-size: clamp(2.45rem, 8.2vw, 8.25rem);
+  line-height: 0.94;
+  letter-spacing: -0.025em;
 }
 
 @utility value-text-responsive {
-  @apply text-2xl md:text-[26px] lg:text-[32px];
+  font-size: clamp(0.84rem, 1.65vw, 1.65rem);
+  line-height: 1.5;
 }
 
 @utility marquee-text-responsive {
-  @apply text-[28px] sm:text-[36px] lg:text-[42px];
+  font-size: clamp(1.15rem, 2.4vw, 2.45rem);
 }
 
 @utility contact-text-responsive {
-  @apply text-[42px] sm:text-[52px] md:text-[62px] lg:text-[100px];
+  font-size: clamp(1.08rem, 4.7vw, 5.25rem);
+  line-height: 1.15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

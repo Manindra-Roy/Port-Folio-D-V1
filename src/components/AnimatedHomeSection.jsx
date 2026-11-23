@@ -1,141 +1,182 @@
-import React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { AnimatedHomeTextLines } from "../components/AnimatedHomeTextLines";
+import Magnetic from "../components/Magnetic";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useMediaQuery } from "react-responsive";
+import { scrollToSection } from "../utils/scroll";
+import { playClickSound } from "../utils/sound";
 
 const AnimatedHomeSection = ({
   subTitle,
   title,
   text,
-  textColor,
-  withScrollTrigger = false,
+  textColor = "text-white",
+  isReady = true,
 }) => {
-  const isMobileXs = useMediaQuery({ maxWidth: 360 });
-  const isMobileSm = useMediaQuery({ minWidth: 361, maxWidth: 640 });
-  const isMobileMd = useMediaQuery({ minWidth: 641, maxWidth: 768 });
-  const isDeviceLg = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
-  const isDeviceXl = useMediaQuery({ minWidth: 1025, maxWidth: 1280 });
-  const isFHd = useMediaQuery({ minWidth: 1920, maxWidth: 1920 });
-  const isMobile = useMediaQuery({ maxWidth: 853 });
-  console.log(window.innerWidth);
   const contextRef = useRef(null);
-  const headerRef = useRef(null);
-  const shouldSplitTitle = title.includes(" ");
-  const titleParts = shouldSplitTitle ? title.split(" ") : [title];
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: withScrollTrigger
-        ? {
-            trigger: contextRef.current,
-          }
-        : undefined,
-    });
-    tl.from(contextRef.current, {
-      y: "50vh",
-      duration: 1,
-      delay: 0.5,
-      ease: "circ.out",
-    });
-    tl.from(
-      headerRef.current,
-      {
-        opacity: 0,
-        y: "200",
-        duration: 1,
-        ease: "circ.out",
-      },
-      "<+0.2"
-    );
-  }, []);
+  const eyebrowRef = useRef(null);
+  const wordRefs = useRef([]);
+  const ruleRef = useRef(null);
+
+  const titleParts = title.split(" ");
+
+  useGSAP(
+    () => {
+      const words = wordRefs.current.filter(Boolean);
+      if (!isReady) {
+        gsap.set(eyebrowRef.current, { opacity: 0, y: 20 });
+        gsap.set(words, { yPercent: 115, opacity: 0 });
+        gsap.set(ruleRef.current, { scaleX: 0, transformOrigin: "left center" });
+        return;
+      }
+
+      const tl = gsap.timeline({ delay: 0.14 });
+      tl.to(eyebrowRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      })
+        .to(
+          words,
+          {
+            yPercent: 0,
+            opacity: 1,
+            duration: 1.1,
+            stagger: 0.11,
+            ease: "power4.out",
+          },
+          "<+0.08"
+        )
+        .to(
+          ruleRef.current,
+          {
+            scaleX: 1,
+            duration: 0.95,
+            ease: "power3.out",
+          },
+          "<+0.25"
+        );
+    },
+    { scope: contextRef, dependencies: [isReady] }
+  );
+
   return (
-    <div ref={contextRef} style={{ height: "50%" }}>
-      <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
-        <div
-          ref={headerRef}
-          className={`flex flex-col justify-center gap-8 pt-0 sm:gap-16`}
-        >
-          <p
-            className={`${
-              isMobileXs
-                ? "text-xs text-center"
-                : isMobileSm
-                ? "text-xs text-center"
-                : isMobileMd
-                ? "text-center"
-                : "text-sm"
-            } font-light tracking-[0.5rem] uppercase px-10 ${textColor}`}
-            style={{
-              paddingLeft: isFHd ? "50px" : isDeviceXl ? "50px" : "",
-              fontSize: isMobileXs?"10px":""
-            }}
+    <div ref={contextRef} className="relative z-10 w-full mt-auto">
+      <div className="px-5 sm:px-10">
+        <div className="flex flex-col justify-center gap-2.5 sm:gap-5">
+          <div
+            ref={eyebrowRef}
+            className="flex items-center gap-2 sm:gap-3 justify-center md:justify-start"
           >
-            {subTitle}
-          </p>
-          <div className="px-10">
-            <h1
-              className={`flex flex-col ${
-                isMobileXs ? "gap-4" : isMobileSm ? "gap-6" : "gap-12"
-              } uppercase banner-text-responsive sm:gap-16 md:block ${textColor} ${
-                isMobileXs || isMobileSm || isMobileMd
-                  ? "text-5xl text-center"
-                  : ""
-              }`}
-              style={{
-                fontSize: isMobileXs
-                  ? "45px"
-                  : isMobileMd
-                  ? "115px"
-                  : isDeviceLg
-                  ? "95px"
-                  : isFHd
-                  ? "110px"
-                  : isDeviceXl
-                  ? "83.3px"
-                  : "",
-              }}
-            >
-              {titleParts.map((part, index) => (
-                <span
-                  style={{
-                    display: isMobileMd ? "block" : "",
-                    paddingTop: isMobileMd ? "25px" : "",
-                  }}
-                  key={index}
-                >
-                  {part}{" "}
-                </span>
-              ))}
-            </h1>
+            <span className="w-4 sm:w-7 h-px bg-gold shrink-0" />
+            <p className="text-[10px] sm:text-xs font-light tracking-[0.2rem] sm:tracking-[0.45rem] uppercase text-gold/90 text-center md:text-left">
+              {subTitle}
+            </p>
           </div>
+
+          <h1
+            className={`uppercase hero-title-responsive text-center md:text-left ${textColor}`}
+          >
+            {titleParts.map((part, index) => (
+              <span
+                key={index}
+                className="inline-block overflow-hidden align-bottom mr-2 sm:mr-6 pb-1"
+              >
+                <span
+                  ref={(el) => (wordRefs.current[index] = el)}
+                  className={
+                    index === 1
+                      ? "italic font-light text-white/95 inline-block"
+                      : "font-normal inline-block"
+                  }
+                >
+                  {part}
+                </span>
+              </span>
+            ))}
+            <span className="inline-block overflow-hidden align-bottom pb-1">
+              <span
+                ref={(el) => (wordRefs.current[titleParts.length] = el)}
+                className="text-gold inline-block"
+              >
+                .
+              </span>
+            </span>
+          </h1>
         </div>
       </div>
+
       <div
-        className={`relative ${
-          isMobileXs || isMobileSm ? "px-10" : "px-10"
-        } ${textColor}`}
-        style={{
-          paddingBottom: `${
-            isMobileXs || isMobileSm || isMobileMd || isDeviceLg ? "5dvh" : ""
-          }`,
-        }}
+        className={`relative mt-3.5 sm:mt-8 px-5 sm:px-10 pb-5 sm:pb-10 ${textColor}`}
       >
-        <div className="absolute inset-x-0 border-t-2" />
         <div
-          className={`${isMobileXs ? "py-8" : "py-12"}  sm:py-16 text-end`}
-          style={{ paddingTop: isDeviceXl ? "20px" : "" }}
-        >
+          ref={ruleRef}
+          className="w-full h-px bg-gradient-to-r from-gold/60 via-white/25 to-white/10"
+        />
+
+        <div className="pt-3.5 sm:pt-8 flex flex-col md:flex-row md:items-end justify-between gap-3.5 sm:gap-6">
+          {/* Editorial Scroll Cue + Primary CTA (Desktop) */}
+          <div className="hidden md:flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => {
+                playClickSound();
+                scrollToSection("services");
+              }}
+              className="inline-flex items-center gap-3.5 text-[11px] font-light tracking-[0.3rem] uppercase text-white/50 hover:text-gold transition-colors cursor-pointer group"
+            >
+              <span className="relative w-px h-10 bg-white/15 overflow-hidden">
+                <span className="absolute inset-x-0 top-0 h-1/2 bg-gold animate-scroll-cue" />
+              </span>
+              <span className="group-hover:translate-x-1 transition-transform duration-300">
+                Scroll to Explore
+              </span>
+            </button>
+
+            <Magnetic strength={0.22}>
+              <button
+                type="button"
+                onClick={() => {
+                  playClickSound();
+                  scrollToSection("work");
+                }}
+                className="px-5 py-2.5 text-[11px] font-light tracking-[0.25rem] uppercase rounded-full border border-gold/45 text-gold hover:bg-gold hover:text-obsidian transition-colors cursor-pointer"
+              >
+                Selected Works ↗
+              </button>
+            </Magnetic>
+          </div>
+
           <AnimatedHomeTextLines
             text={text}
-            className={`font-light uppercase value-text-responsive ${textColor} ${
-              isMobileXs || isMobileSm
-                ? "text-lg text-center"
-                : isMobileMd
-                ? "text-center text-2xl"
-                : ""
-            }`}
+            isReady={isReady}
+            className="max-w-2xl md:ml-auto font-light uppercase value-text-responsive text-center md:text-right text-white/80"
           />
+
+          {/* Mobile Primary Action Row */}
+          <div className="flex md:hidden items-center justify-center gap-3 pt-1">
+            <button
+              type="button"
+              onClick={() => {
+                playClickSound();
+                scrollToSection("work");
+              }}
+              className="px-5 py-2.5 text-[11px] font-normal tracking-[0.22rem] uppercase rounded-full bg-gold text-obsidian active:scale-95 transition-transform cursor-pointer"
+            >
+              Selected Works ↗
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                playClickSound();
+                scrollToSection("services");
+              }}
+              className="px-4 py-2.5 text-[11px] font-light tracking-[0.22rem] uppercase rounded-full border border-white/20 text-white/75 active:border-gold active:text-gold active:scale-95 transition-all cursor-pointer"
+            >
+              Explore ↓
+            </button>
+          </div>
         </div>
       </div>
     </div>

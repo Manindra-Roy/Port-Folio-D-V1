@@ -1,136 +1,131 @@
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import { useMediaQuery } from "react-responsive";
+
 gsap.registerPlugin(ScrollTrigger);
+
 const ServiceSummary = () => {
-  const isMobileXs = useMediaQuery({ maxWidth: 360 });
-  const isMobileSm = useMediaQuery({ minWidth: 361, maxWidth: 640 });
-  const isMobileMd = useMediaQuery({ minWidth: 641, maxWidth: 768 });
-  const isDeviceLg = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
-  const isDeviceXl = useMediaQuery({ minWidth: 1025, maxWidth: 1280 });
-  const isFHd = useMediaQuery({ minWidth: 1920, maxWidth: 1920 });
-  useGSAP(() => {
-    gsap.to("#title-service-1", {
-      xPercent: isMobileXs || isMobileSm ? 350 : 20,
-      scrollTrigger: {
-        target: "#title-service-1",
-        scrub: true,
-      },
-    });
-    gsap.to("#title-service-2", {
-      xPercent: isMobileXs || isMobileSm ? -400 : -30,
-      scrollTrigger: {
-        target: "#title-service-2",
-        scrub: true,
-      },
-    });
-    gsap.to("#title-service-3", {
-      delay: 2,
-      xPercent: isMobileXs || isMobileSm ? 400 : 100,
-      scrollTrigger: {
-        target: "#title-service-3",
-        scrub: true,
-      },
-    });
-    gsap.to("#title-service-4", {
-      xPercent: isMobileXs || isMobileSm ? -350 : -100,
-      scrollTrigger: {
-        target: "#title-service-4",
-        scrub: true,
-      },
-    });
-  });
+  const sectionRef = useRef(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add(
+        "(min-width: 768px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const triggerConfig = {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.1,
+          };
+
+          gsap.fromTo(
+            "#title-service-1",
+            { xPercent: -8 },
+            { xPercent: 8, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-2",
+            { xPercent: 10 },
+            { xPercent: -10, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-3",
+            { xPercent: -10 },
+            { xPercent: 10, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-4",
+            { xPercent: 8 },
+            { xPercent: -8, scrollTrigger: triggerConfig }
+          );
+        }
+      );
+
+      mm.add(
+        "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+        () => {
+          const triggerConfig = {
+            trigger: sectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+          };
+
+          gsap.fromTo(
+            "#title-service-1",
+            { xPercent: -5 },
+            { xPercent: 5, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-2",
+            { xPercent: 5 },
+            { xPercent: -5, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-3",
+            { xPercent: -5 },
+            { xPercent: 5, scrollTrigger: triggerConfig }
+          );
+          gsap.fromTo(
+            "#title-service-4",
+            { xPercent: 5 },
+            { xPercent: -5, scrollTrigger: triggerConfig }
+          );
+        }
+      );
+
+      return () => mm.revert();
+    },
+    { scope: sectionRef, dependencies: [] }
+  );
+
   return (
     <section
-      className={`mt-20 overflow-hidden font-light leading-snug text-center mb-42 contact-text-responsive`}
+      ref={sectionRef}
+      className="py-16 sm:py-24 md:py-32 px-4 overflow-hidden font-light text-center text-obsidian bg-primary"
     >
-      <div
-        id="title-service-1"
-        className={`${
-          isMobileXs || isMobileSm
-            ? "-translate-x-40 text-2xl"
-            : "" || isMobileMd || isDeviceLg
-            ? "text-5xl"
-            : ""
-        }`}
-        style={{
-          fontSize: isMobileXs
-            ? "20px"
-            : isFHd
-            ? "92.5px"
-            : isDeviceXl
-            ? "65px"
-            : "",
-        }}
-      >
-        <p>Architucture</p>
+      <div className="mb-8 sm:mb-12 flex items-center justify-center gap-3">
+        <span className="w-8 h-px bg-gold" />
+        <p className="text-[10px] sm:text-[11px] tracking-[0.4rem] uppercase text-DarkLava/75">
+          Core Capabilities
+        </p>
+        <span className="w-8 h-px bg-gold" />
       </div>
-      <div
-        id="title-service-2"
-        className={`flex items-center justify-center gap-3 ${
-          isMobileXs || isMobileSm
-            ? "translate-x-46 text-2xl"
-            : isMobileMd || isDeviceLg
-            ? "text-5xl"
-            : "translate-x-16"
-        }`}
-        style={{
-          fontSize: isMobileXs
-            ? "20px"
-            : isFHd
-            ? "92.5px"
-            : isDeviceXl
-            ? "65px"
-            : "",
-        }}
-      >
-        <p className="font-normal">Development</p>
+
+      <div className="flex flex-col gap-2.5 sm:gap-5 contact-text-responsive select-none uppercase">
+        <div id="title-service-1" className="will-change-transform">
+          <p className="tracking-tight font-normal text-outline-dark">
+            Architecture
+          </p>
+        </div>
+
         <div
-          className="w-10 h-1 md:w-32 bg-gold"
-          style={{ width: isMobileMd ? "50px" : "" }}
-        />
-        <p>Deployment</p>
-      </div>
-      <div
-        id="title-service-3"
-        className={`flex items-center justify-center gap-3 ${
-          isMobileXs || isMobileSm
-            ? "-translate-x-49 text-2xl"
-            : isMobileMd || isDeviceLg
-            ? "text-5xl -translate-x-35"
-            : "-translate-x-48"
-        }`}
-        style={{ fontSize: isMobileXs
-            ? "20px"
-            :isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
-      >
-        <p>APIs</p>
+          id="title-service-2"
+          className="flex items-center justify-center gap-1.5 sm:gap-5 will-change-transform"
+        >
+          <p className="font-normal text-obsidian">Development</p>
+          <span className="w-3.5 sm:w-16 md:w-28 h-[2px] bg-gold shrink-0" />
+          <p className="text-outline-dark">Deployment</p>
+        </div>
+
         <div
-          className={`w-10 h-1 md:w-32 bg-gold`}
-          style={{ width: isMobileMd ? "50px" : "" }}
-        />
-        <p className="italic">Frontends</p>
-        <div
-          className="w-10 h-1 md:w-32 bg-gold"
-          style={{ width: isMobileMd ? "50px" : "" }}
-        />
-        <p>Scalability</p>
-      </div>
-      <div
-        id="title-service-4"
-        className={`${
-          isMobileXs || isMobileSm
-            ? "translate-x-44 text-2xl"
-            : isMobileMd || isDeviceLg
-            ? "text-5xl translate-x-60"
-            : "translate-x-48"
-        }`}
-        style={{ fontSize: isMobileXs
-            ? "20px"
-            :isFHd ? "92.5px" : isDeviceXl ? "65px" : "" }}
-      >
-        <p>Databases</p>
+          id="title-service-3"
+          className="flex items-center justify-center gap-1.5 sm:gap-5 will-change-transform"
+        >
+          <p className="text-DarkLava/85">APIs</p>
+          <span className="w-3.5 sm:w-16 md:w-28 h-[2px] bg-gold shrink-0" />
+          <p className="italic font-normal text-gold">Frontends</p>
+          <span className="w-3.5 sm:w-16 md:w-28 h-[2px] bg-gold shrink-0" />
+          <p className="text-DarkLava/85">Scalability</p>
+        </div>
+
+        <div id="title-service-4" className="will-change-transform">
+          <p className="tracking-tight text-obsidian">Databases</p>
+        </div>
       </div>
     </section>
   );

@@ -59,5 +59,3 @@ export function CodeM(props) {
     </group>
   );
 }
-
-useGLTF.preload("/models/CodeM.glb");

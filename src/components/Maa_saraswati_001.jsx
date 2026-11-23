@@ -94,4 +94,3 @@ export function Maa_saraswati_001(props) {
   );
 }
 
-useGLTF.preload("/models/Maa_saraswati_001.glb");

@@ -1,111 +1,132 @@
-import React from "react";
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { AnimatedTextLines } from "../components/AnimatedTextLines";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useMediaQuery } from "react-responsive";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const AnimatedHeaderSection = ({
   subTitle,
   title,
   text,
-  textColor,
+  textColor = "text-white",
+  sectionIndex = "",
   withScrollTrigger = false,
 }) => {
-  const isMobileXs = useMediaQuery({ maxWidth: 360 });
-  const isMobileSm = useMediaQuery({ minWidth: 361, maxWidth: 640 });
-  const isMobileMd = useMediaQuery({ minWidth: 641, maxWidth: 768 });
-  const isDeviceLg = useMediaQuery({ minWidth: 769, maxWidth: 1024 });
-  const isDeviceXl = useMediaQuery({ minWidth: 1025, maxWidth: 1280 });
-  const isFHd = useMediaQuery({ minWidth: 1920, maxWidth: 1920 });
-  const isMobile = useMediaQuery({ maxWidth: 853 });
   const contextRef = useRef(null);
-  const headerRef = useRef(null);
-  const shouldSplitTitle = title.includes(" ");
-  const titleParts = shouldSplitTitle ? title.split(" ") : [title];
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: withScrollTrigger
-        ? {
-            trigger: contextRef.current,
-          }
-        : undefined,
-    });
-    tl.from(contextRef.current, {
-      y: "50vh",
-      duration: 1,
-      ease: "circ.out",
-    });
-    tl.from(
-      headerRef.current,
-      {
+  const subRef = useRef(null);
+  const wordRefs = useRef([]);
+  const lineRef = useRef(null);
+
+  const isLight = textColor.includes("black");
+  const titleParts = title.includes(" ") ? title.split(" ") : [title];
+
+  useGSAP(
+    () => {
+      const words = wordRefs.current.filter(Boolean);
+      const tl = gsap.timeline({
+        scrollTrigger: withScrollTrigger
+          ? {
+              trigger: contextRef.current,
+              start: "top 82%",
+              once: true,
+            }
+          : undefined,
+      });
+
+      tl.from(subRef.current, {
         opacity: 0,
-        y: "200",
-        duration: 1,
-        ease: "circ.out",
-      },
-      "<+0.2"
-    );
-  }, []);
+        y: 22,
+        duration: 0.7,
+        ease: "power3.out",
+      })
+        .from(
+          words,
+          {
+            yPercent: 115,
+            opacity: 0,
+            duration: 0.95,
+            stagger: 0.08,
+            ease: "power4.out",
+          },
+          "<+0.08"
+        )
+        .from(
+          lineRef.current,
+          {
+            scaleX: 0,
+            transformOrigin: "left center",
+            duration: 0.9,
+            ease: "power3.out",
+          },
+          "<+0.2"
+        );
+    },
+    { scope: contextRef, dependencies: [] }
+  );
+
   return (
     <div ref={contextRef}>
-      <div style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}>
+      <div className="flex flex-col justify-center gap-4 pt-12 sm:pt-20 sm:gap-8 px-5 sm:px-10">
         <div
-          ref={headerRef}
-          className="flex flex-col justify-center gap-12 pt-16 sm:gap-16"
+          ref={subRef}
+          className="flex items-center justify-between gap-4"
         >
-          <p
-            className={`${
-              isMobileXs || isMobileSm
-                ? "text-xs text-center"
-                : isMobileMd
-                ? "text-center"
-                : "text-sm"
-            } font-light tracking-[0.5rem] uppercase px-10 ${textColor}`}
-            style={{fontSize: isMobileXs?"10px":""}}
-          >
-            {subTitle}
-          </p>
-          <div className="px-10">
-            <h1
-              className={`flex flex-col gap-12 uppercase banner-text-responsive sm:gap-16 md:block ${textColor} ${
-                isMobileXs || isMobileSm
-                  ? "text-5xl text-center"
-                  : isMobileMd
-                  ? "text-center"
-                  : ""
+          <div className="flex items-center gap-2.5 sm:gap-3 mx-auto md:mx-0">
+            <span className="w-5 sm:w-7 h-px bg-gold shrink-0" />
+            <p
+              className={`text-[10px] sm:text-xs font-light tracking-[0.2rem] sm:tracking-[0.42rem] uppercase text-center md:text-left ${
+                isLight ? "text-DarkLava/80" : "text-gold/90"
               }`}
-              style={{
-                fontSize: isMobileXs
-                  ? "45px"
-                  : isMobileMd
-                  ? "115px"
-                  : isDeviceLg
-                  ? "95px"
-                  : isFHd
-                  ? "110px"
-                  : isDeviceXl
-                  ? "83.3px"
-                  : "",
-              }}
             >
-              {titleParts.map((part, index) => (
-                <span key={index}>{part} </span>
-              ))}
-            </h1>
+              {subTitle}
+            </p>
           </div>
+          {sectionIndex && (
+            <span
+              className={`hidden md:inline-block text-xs font-light tracking-[0.3rem] uppercase ${
+                isLight ? "text-DarkLava/50" : "text-white/30"
+              }`}
+            >
+              [ {sectionIndex} ]
+            </span>
+          )}
         </div>
+
+        <h1
+          className={`uppercase font-normal banner-text-responsive text-center md:text-left ${textColor}`}
+        >
+          {titleParts.map((part, index) => (
+            <span
+              key={index}
+              className="inline-block overflow-hidden align-bottom mr-3 sm:mr-5 pb-1"
+            >
+              <span
+                ref={(el) => (wordRefs.current[index] = el)}
+                className="inline-block"
+              >
+                {part}
+              </span>
+            </span>
+          ))}
+        </h1>
       </div>
-      <div className={`relative px-10 ${textColor}`}>
-        <div className="absolute inset-x-0 border-t-2" />
-        <div className="py-12 sm:py-16 text-end">
+
+      <div className={`relative mt-6 sm:mt-10 px-5 sm:px-10 ${textColor}`}>
+        <div
+          ref={lineRef}
+          className={`w-full h-px ${
+            isLight
+              ? "bg-gradient-to-r from-obsidian/35 via-obsidian/20 to-transparent"
+              : "bg-gradient-to-r from-gold/45 via-white/20 to-transparent"
+          }`}
+        />
+        <div className="py-7 sm:py-14 flex justify-center md:justify-end">
           <AnimatedTextLines
             text={text}
-            className={`font-light uppercase value-text-responsive ${textColor} ${
-              isMobileXs || isMobileSm
-                ? "text-lg text-center"
-                : isMobileMd
-                ? "text-2xl text-center"
-                : ""
+            className={`max-w-2xl font-light uppercase value-text-responsive text-center md:text-right ${
+              isLight ? "text-obsidian/80" : "text-white/75"
             }`}
           />
         </div>
